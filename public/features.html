@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features – NatureBasket</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Nature<span>Basket</span></a>
+  <div class="nav-links">
+    <a href="/price-check.html">Price Check</a>
+    <a href="/how-it-works.html">How It Works</a>
+    <a href="/features.html" class="active">Features</a>
+    <a href="/market-data.html">Market Data</a>
+  </div>
+  <button class="nav-btn" onclick="openChat()">Ask AI Agent</button>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-tag">Features</div>
+  <h1>Everything a <span>Farmer</span> Needs</h1>
+  <p>Powerful tools designed to maximize your crop profits.</p>
+</div>
+
+<section style="padding:4rem 2rem;max-width:1100px;margin:0 auto">
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#e8f5ee"><i class="fas fa-database" style="color:var(--green-mid)"></i></div>
+      <h4>Open Government Data</h4>
+      <p>Pulls from India's data.gov.in AGMARKNET API — official, free, and transparent. No proprietary lock-in.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#fff8e1"><i class="fas fa-robot" style="color:var(--amber)"></i></div>
+      <h4>AI Price Agent</h4>
+      <p>Our AI agent analyzes market patterns and gives personalised advice — when to sell, where to sell, and what price to expect.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#e8f0fe"><i class="fas fa-chart-line" style="color:#3182ce"></i></div>
+      <h4>Historical Analysis</h4>
+      <p>Up to 5 years of price history with seasonal breakdown so you can predict and plan crop cycles better.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#fce8e8"><i class="fas fa-bell" style="color:var(--red)"></i></div>
+      <h4>Price Alerts</h4>
+      <p>Set target prices and get SMS/WhatsApp alerts when your crop hits the right rate at any mandi.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#f0fdf4"><i class="fas fa-map-marker-alt" style="color:#16a34a"></i></div>
+      <h4>District Intelligence</h4>
+      <p>Color-coded maps show which districts are paying more — so you can travel to the right mandi and maximise returns.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon" style="background:#fdf4e8"><i class="fas fa-comments" style="color:var(--earth)"></i></div>
+      <h4>Telugu & Hindi Support</h4>
+      <p>Talk to the AI agent in Telugu, Hindi, or English. Designed for every farmer, not just the tech-savvy ones.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding:3rem 2rem;max-width:900px;margin:0 auto">
+  <div class="ai-box">
+    <h3><i class="fas fa-robot"></i> Try the AI Agent Now</h3>
+    <p style="margin-bottom:1rem;opacity:0.8">Ask about crop prices, best markets, government schemes — anything!</p>
+    <button class="btn-primary" onclick="openChat()" style="border:none;cursor:pointer"><i class="fas fa-robot" style="margin-right:8px"></i>Open AI Agent</button>
+  </div>
+</section>
+
+<footer>
+  <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:0.5rem">Nature<span>Basket</span></div>
+  <p>Powered by open data from <span>data.gov.in AGMARKNET</span> • Built for the farmers of AP & Telangana</p>
+  <p style="margin-top:0.5rem;font-size:0.78rem">Data is indicative. Always verify at your local APMC mandi before selling.</p>
+</footer>
+
+<button class="chat-fab" onclick="openChat()" title="Open AI Agent">
+  <i class="fas fa-robot"></i>
+  <span class="chat-badge">AI</span>
+</button>
+
+<div class="chatbot" id="chatbot">
+  <div class="chat-head">
+    <div class="chat-avatar">🌾</div>
+    <div class="chat-head-info">
+      <h4>NatureBasket AI Agent</h4>
+      <p>Crop prices • Market advice • Ask anything</p>
+    </div>
+    <button class="chat-close" onclick="closeChat()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">Namaskaram! 🙏 I'm your NatureBasket AI agent. How can I help you today?</div>
+  </div>
+  <div class="chat-quick">
+    <button class="chat-quick-btn" onclick="quickChat('Tomato price today')">🍅 Tomato price</button>
+    <button class="chat-quick-btn" onclick="quickChat('Best district to sell cotton')">Cotton market</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chat-input" type="text" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script src="/js/chatbot.js"></script>
+</body>
+</html>

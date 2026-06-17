@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Market Data – NatureBasket</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Nature<span>Basket</span></a>
+  <div class="nav-links">
+    <a href="/price-check.html">Price Check</a>
+    <a href="/how-it-works.html">How It Works</a>
+    <a href="/features.html">Features</a>
+    <a href="/market-data.html" class="active">Market Data</a>
+  </div>
+  <button class="nav-btn" onclick="openChat()">Ask AI Agent</button>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-tag">Market Intelligence</div>
+  <h1><span>Market</span> Data Overview</h1>
+  <p>Live crop prices and trends across Andhra Pradesh and Telangana mandis.</p>
+</div>
+
+<section style="padding:4rem 2rem;max-width:1100px;margin:0 auto">
+  <div class="section-title" style="margin-bottom:1.5rem">Top Crops Today</div>
+  <div id="crop-cards" class="price-cards" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))"></div>
+
+  <div style="margin-top:3rem">
+    <div class="section-title" style="margin-bottom:1.5rem">Market Summary</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:var(--green-pale)"><i class="fas fa-store" style="color:var(--green-mid)"></i></div>
+        <div class="stat-card-value">800+</div>
+        <div class="stat-card-label">Active Mandis</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#fff8e1"><i class="fas fa-map" style="color:var(--amber)"></i></div>
+        <div class="stat-card-value">45</div>
+        <div class="stat-card-label">Districts Covered</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#e8f0fe"><i class="fas fa-seedling" style="color:var(--blue)"></i></div>
+        <div class="stat-card-value">200+</div>
+        <div class="stat-card-label">Crop Varieties</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-icon" style="background:#fce8e8"><i class="fas fa-sync-alt" style="color:var(--red)"></i></div>
+        <div class="stat-card-value">Daily</div>
+        <div class="stat-card-label">Data Updates</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:1rem">
+      <div class="section-title" style="font-size:1.3rem">Commodity Price Overview</div>
+      <div class="chart-tabs">
+        <button class="chart-tab active" onclick="switchMarketChart('bar',this)">Bar Chart</button>
+        <button class="chart-tab" onclick="switchMarketChart('radar',this)">Radar</button>
+      </div>
+    </div>
+    <div class="chart-box">
+      <div id="market-chart-bar" style="position:relative;height:350px"><canvas id="marketBarChart"></canvas></div>
+      <div id="market-chart-radar" style="display:none;position:relative;height:350px"><canvas id="marketRadarChart"></canvas></div>
+    </div>
+  </div>
+
+  <div style="margin-top:3rem;text-align:center">
+    <p style="color:var(--text-mid);margin-bottom:1.5rem">Need detailed price data for a specific crop?</p>
+    <a href="/price-check.html" class="btn-primary" style="display:inline-flex;text-decoration:none"><i class="fas fa-search" style="margin-right:8px"></i>Search Any Crop</a>
+  </div>
+</section>
+
+<footer>
+  <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:0.5rem">Nature<span>Basket</span></div>
+  <p>Powered by open data from <span>data.gov.in AGMARKNET</span> • Built for the farmers of AP & Telangana</p>
+  <p style="margin-top:0.5rem;font-size:0.78rem">Data is indicative. Always verify at your local APMC mandi before selling.</p>
+</footer>
+
+<button class="chat-fab" onclick="openChat()" title="Open AI Agent">
+  <i class="fas fa-robot"></i>
+  <span class="chat-badge">AI</span>
+</button>
+
+<div class="chatbot" id="chatbot">
+  <div class="chat-head">
+    <div class="chat-avatar">🌾</div>
+    <div class="chat-head-info">
+      <h4>NatureBasket AI Agent</h4>
+      <p>Crop prices • Market advice • Ask anything</p>
+    </div>
+    <button class="chat-close" onclick="closeChat()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">Namaskaram! 🙏 I provide real market data from government APMC mandis. Ask about crop prices, MSP rates, or government schemes!</div>
+  </div>
+  <div class="chat-quick">
+    <button class="chat-quick-btn" onclick="quickChat('Tomato price today')">🍅 Tomato price</button>
+    <button class="chat-quick-btn" onclick="quickChat('Best district to sell cotton')">Cotton market</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chat-input" type="text" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script src="/js/chatbot.js"></script>
+<script>
+const MARKET_CROPS = ['Tomato','Rice','Cotton','Onion','Maize','Chilli','Groundnut','Turmeric'];
+let marketChart = null;
+
+async function loadMarketData() {
+  const container = document.getElementById('crop-cards');
+  container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-light)"><div class="spinner" style="margin:0 auto"></div></div>';
+  try {
+    const results = await Promise.all(MARKET_CROPS.map(c => fetch('/api/crops/'+encodeURIComponent(c)).then(r=>r.json())));
+    container.innerHTML = results.map((d,i) => `
+      <a href="/price-check.html?crop=${MARKET_CROPS[i]}" style="text-decoration:none">
+        <div class="price-card" style="cursor:pointer;transition:transform .2s,box-shadow .2s;border-top:4px solid ${d.avg>3000?'var(--green-light)':d.avg>1500?'var(--amber)':'var(--blue)'}">
+          <div style="font-size:1.5rem;margin-bottom:0.3rem">${d.emoji}</div>
+          <div class="price-card-label">${MARKET_CROPS[i]}</div>
+          <div class="price-card-value" style="font-size:1.5rem">\u20B9${d.avg.toLocaleString()}/q</div>
+          <div class="price-card-sub">Max: \u20B9${d.max.toLocaleString()}</div>
+        </div>
+      </a>
+    `).join('');
+
+    renderMarketCharts(results.map((d,i)=>({name:MARKET_CROPS[i],emoji:d.emoji,avg:d.avg,max:d.max,min:d.min})));
+  } catch(e) {
+    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--red)">Error loading market data</div>';
+  }
+}
+
+function renderMarketCharts(crops) {
+  if(marketChart) marketChart.destroy();
+  marketChart = new Chart(document.getElementById('marketBarChart'),{
+    type:'bar',
+    data:{
+      labels:crops.map(c=>c.emoji+' '+c.name),
+      datasets:[
+        {label:'Min Price',data:crops.map(c=>c.min),backgroundColor:'rgba(245,158,11,0.7)'},
+        {label:'Avg Price',data:crops.map(c=>c.avg),backgroundColor:'rgba(45,122,79,0.7)'},
+        {label:'Max Price',data:crops.map(c=>c.max),backgroundColor:'rgba(49,130,206,0.7)'}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{ticks:{callback:v=>'\u20B9'+v.toLocaleString()}}}}
+  });
+}
+
+function switchMarketChart(type,btn) {
+  document.querySelectorAll('.chart-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('market-chart-bar').style.display=type==='bar'?'block':'none';
+  document.getElementById('market-chart-radar').style.display=type==='radar'?'block':'none';
+}
+
+loadMarketData();
+</script>
+</body>
+</html>

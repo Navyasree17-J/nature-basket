@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NatureBasket – Direct Farm to Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Nature<span>Basket</span></a>
+  <div class="nav-links">
+    <a href="/price-check.html">Price Check</a>
+    <a href="/how-it-works.html">How It Works</a>
+    <a href="/features.html">Features</a>
+    <a href="/market-data.html">Market Data</a>
+  </div>
+  <button class="nav-btn" onclick="openChat()">Ask AI Agent</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">🌾 Empowering Farmers of AP & Telangana</div>
+  <h1>No Middlemen.<br><span>Real Prices.</span> Real Profits.</h1>
+  <p>Get live & historical market prices for any crop across all districts of Andhra Pradesh and Telangana. Powered by open data and AI.</p>
+  <div class="hero-actions">
+    <a href="/price-check.html" class="btn-primary"><i class="fas fa-search" style="margin-right:8px"></i>Check Crop Price</a>
+    <button class="btn-outline" onclick="openChat()"><i class="fas fa-robot" style="margin-right:8px"></i>Talk to AI Agent</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n">800+</div><div class="stat-l">Market Yards</div></div>
+    <div class="stat"><div class="stat-n">45</div><div class="stat-l">Districts</div></div>
+    <div class="stat"><div class="stat-n">200+</div><div class="stat-l">Crop Varieties</div></div>
+    <div class="stat"><div class="stat-n">Free</div><div class="stat-l">Open Source</div></div>
+  </div>
+</div>
+
+<section style="padding:4rem 2rem;max-width:1100px;margin:0 auto">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+    <a href="/price-check.html" class="home-card">
+      <div class="home-card-icon" style="background:var(--green-pale)"><i class="fas fa-search" style="color:var(--green-mid)"></i></div>
+      <h3>Price Check</h3>
+      <p>Search live crop prices across 800+ APMC mandis in AP & Telangana</p>
+    </a>
+    <a href="/how-it-works.html" class="home-card">
+      <div class="home-card-icon" style="background:#fff8e1"><i class="fas fa-lightbulb" style="color:var(--amber)"></i></div>
+      <h3>How It Works</h3>
+      <p>Simple 4-step process to find the best prices for your crops</p>
+    </a>
+    <a href="/features.html" class="home-card">
+      <div class="home-card-icon" style="background:#e8f0fe"><i class="fas fa-star" style="color:var(--blue)"></i></div>
+      <h3>Features</h3>
+      <p>AI-powered insights, historical charts, price alerts & more</p>
+    </a>
+    <a href="/market-data.html" class="home-card">
+      <div class="home-card-icon" style="background:#fce8e8"><i class="fas fa-chart-line" style="color:var(--red)"></i></div>
+      <h3>Market Data</h3>
+      <p>Explore district-wise market intelligence and price trends</p>
+    </a>
+  </div>
+</section>
+
+<section style="padding:3rem 2rem;max-width:900px;margin:0 auto;text-align:center">
+  <div class="section-tag">Trusted by Farmers</div>
+  <div class="section-title">Why NatureBasket?</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem">
+    <div>
+      <div style="font-size:2.5rem;margin-bottom:0.5rem">🏛️</div>
+      <div style="font-weight:600;color:var(--green-dark);margin-bottom:0.3rem">Government Data</div>
+      <div style="font-size:0.85rem;color:var(--text-mid)">Official AGMARKNET data, free & transparent</div>
+    </div>
+    <div>
+      <div style="font-size:2.5rem;margin-bottom:0.5rem">🤖</div>
+      <div style="font-weight:600;color:var(--green-dark);margin-bottom:0.3rem">AI Powered</div>
+      <div style="font-size:0.85rem;color:var(--text-mid)">Smart market advice in Telugu, Hindi & English</div>
+    </div>
+    <div>
+      <div style="font-size:2.5rem;margin-bottom:0.5rem">💰</div>
+      <div style="font-weight:600;color:var(--green-dark);margin-bottom:0.3rem">No Middlemen</div>
+      <div style="font-size:0.85rem;color:var(--text-mid)">Direct farm to market, full profit for you</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:0.5rem">Nature<span>Basket</span></div>
+  <p>Powered by open data from <span>data.gov.in AGMARKNET</span> • Built for the farmers of AP & Telangana</p>
+  <p style="margin-top:0.5rem;font-size:0.78rem">Data is indicative. Always verify at your local APMC mandi before selling.</p>
+</footer>
+
+<button class="chat-fab" onclick="openChat()" title="Open AI Agent">
+  <i class="fas fa-robot"></i>
+  <span class="chat-badge">AI</span>
+</button>
+
+<div class="chatbot" id="chatbot">
+  <div class="chat-head">
+    <div class="chat-avatar">🌾</div>
+    <div class="chat-head-info">
+      <h4>NatureBasket AI Agent</h4>
+      <p>Crop prices • Market advice • Ask anything</p>
+    </div>
+    <button class="chat-close" onclick="closeChat()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">Namaskaram! 🙏 I'm your NatureBasket AI agent. I can help you with:<br><br>• Current crop prices in AP & Telangana<br>• Best district to sell your produce<br>• Market trends and predictions<br>• Farming advice & schemes<br><br>What crop are you looking for today?</div>
+  </div>
+  <div class="chat-quick">
+    <button class="chat-quick-btn" onclick="quickChat('Tomato price today')">🍅 Tomato price</button>
+    <button class="chat-quick-btn" onclick="quickChat('Best district to sell cotton')">Cotton market</button>
+    <button class="chat-quick-btn" onclick="quickChat('Rice MSP price 2024')">Rice MSP</button>
+    <button class="chat-quick-btn" onclick="quickChat('PM Kisan scheme details')">PM Kisan</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chat-input" type="text" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script src="/js/chatbot.js"></script>
+</body>
+</html>

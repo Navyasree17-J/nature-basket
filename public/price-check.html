@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Price Check – NatureBasket</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Nature<span>Basket</span></a>
+  <div class="nav-links">
+    <a href="/price-check.html" class="active">Price Check</a>
+    <a href="/how-it-works.html">How It Works</a>
+    <a href="/features.html">Features</a>
+    <a href="/market-data.html">Market Data</a>
+  </div>
+  <button class="nav-btn" onclick="openChat()">Ask AI Agent</button>
+</nav>
+
+<section id="search-wrap" style="padding:4rem 2rem;max-width:1100px;margin:0 auto">
+  <div class="section-tag">Price Intelligence</div>
+  <div class="section-title">Search Any Crop Price</div>
+  <p class="section-sub" style="margin-bottom:1.5rem">Real-time data from government APMC mandis across AP & Telangana</p>
+  <div class="search-section">
+    <div class="search-row">
+      <div class="search-input-wrap">
+        <i class="fas fa-seedling"></i>
+        <input class="search-input" id="crop-input" type="text" placeholder="Enter crop name (e.g. Tomato, Rice, Cotton...)" onkeypress="if(event.key==='Enter') searchCrop()">
+      </div>
+      <select class="search-select" id="state-filter">
+        <option value="both">AP + Telangana</option>
+        <option value="AP">Andhra Pradesh</option>
+        <option value="TG">Telangana</option>
+      </select>
+      <select class="search-select" id="period-filter">
+        <option value="7">Last 7 Days</option>
+        <option value="30">Last 30 Days</option>
+        <option value="90">Last 3 Months</option>
+        <option value="365">Last 1 Year</option>
+      </select>
+      <button class="search-btn" onclick="searchCrop()"><i class="fas fa-search"></i> Search</button>
+    </div>
+    <div class="quick-tags">
+      <span style="font-size:0.8rem;color:var(--text-light);align-self:center;">Popular:</span>
+      <span class="quick-tag" onclick="quickSearch('Tomato')">🍅 Tomato</span>
+      <span class="quick-tag" onclick="quickSearch('Rice')">🌾 Rice</span>
+      <span class="quick-tag" onclick="quickSearch('Cotton')">🌿 Cotton</span>
+      <span class="quick-tag" onclick="quickSearch('Onion')">🧅 Onion</span>
+      <span class="quick-tag" onclick="quickSearch('Maize')">🌽 Maize</span>
+      <span class="quick-tag" onclick="quickSearch('Groundnut')">🥜 Groundnut</span>
+      <span class="quick-tag" onclick="quickSearch('Turmeric')">🟡 Turmeric</span>
+      <span class="quick-tag" onclick="quickSearch('Chilli')">🌶️ Chilli</span>
+    </div>
+  </div>
+</section>
+
+<section id="results-section" style="padding:0 2rem 4rem;max-width:1100px;margin:0 auto">
+  <div class="loader" id="search-loader">
+    <div class="spinner"></div> Fetching market data from APMC mandis...
+  </div>
+
+  <div id="results-content" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:1.5rem">
+      <div>
+        <div class="section-tag">Market Results</div>
+        <div class="section-title" id="result-title">Tomato Prices</div>
+        <p style="color:var(--text-mid);font-size:0.88rem" id="result-sub">Data from 38 mandis • Updated today</p>
+      </div>
+      <button onclick="exportData()" style="background:var(--green-pale);border:1px solid #c5e3d0;color:var(--green-mid);padding:0.5rem 1.2rem;border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:500;display:flex;align-items:center;gap:6px"><i class="fas fa-download"></i> Export CSV</button>
+    </div>
+
+    <div class="price-cards">
+      <div class="price-card max">
+        <div class="price-card-label">Maximum Price</div>
+        <div class="price-card-value" id="max-price">₹0</div>
+        <div class="price-card-unit">per quintal</div>
+        <div class="price-card-sub" id="max-district">—</div>
+      </div>
+      <div class="price-card min">
+        <div class="price-card-label">Minimum Price</div>
+        <div class="price-card-value" id="min-price">₹0</div>
+        <div class="price-card-unit">per quintal</div>
+        <div class="price-card-sub" id="min-district">—</div>
+      </div>
+      <div class="price-card avg">
+        <div class="price-card-label">Modal Price</div>
+        <div class="price-card-value" id="avg-price">₹0</div>
+        <div class="price-card-unit">per quintal</div>
+        <div class="price-card-sub">Most common rate</div>
+      </div>
+      <div class="price-card best">
+        <div class="price-card-label">Best Buy District</div>
+        <div class="price-card-value" id="best-buy" style="font-size:1.3rem">—</div>
+        <div class="price-card-unit">lowest price district</div>
+        <div class="price-card-sub" id="best-buy-price">—</div>
+      </div>
+    </div>
+
+    <div class="ai-box" style="margin-bottom:2rem">
+      <h3><i class="fas fa-robot"></i> AI Market Insights</h3>
+      <ul class="ai-insights-list" id="ai-insights-list">
+        <li><i class="fas fa-circle-info"></i> Loading AI analysis...</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom:2rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:12px">
+        <div class="section-title" style="font-size:1.3rem">Price Trends & History</div>
+        <div class="chart-tabs">
+          <button class="chart-tab active" onclick="switchChart('trend',this)">Price Trend</button>
+          <button class="chart-tab" onclick="switchChart('district',this)">District Compare</button>
+          <button class="chart-tab" onclick="switchChart('seasonal',this)">Seasonal</button>
+          <button class="chart-tab" onclick="switchChart('supply',this)">Supply vs Price</button>
+        </div>
+      </div>
+      <div class="chart-box">
+        <div id="chart-trend" style="position:relative;height:300px"><canvas id="trendChart" role="img" aria-label="Price trend chart over time"></canvas></div>
+        <div id="chart-district" style="display:none;position:relative;height:320px"><canvas id="districtChart" role="img" aria-label="District-wise price comparison bar chart"></canvas></div>
+        <div id="chart-seasonal" style="display:none;position:relative;height:300px"><canvas id="seasonalChart" role="img" aria-label="Seasonal price pattern chart"></canvas></div>
+        <div id="chart-supply" style="display:none;position:relative;height:300px"><canvas id="supplyChart" role="img" aria-label="Supply vs price scatter chart"></canvas></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:2rem">
+      <div class="section-title" style="font-size:1.3rem;margin-bottom:1rem">District-wise Price Breakdown</div>
+      <div style="overflow-x:auto">
+        <table class="district-table" id="district-table">
+          <thead><tr><th>District</th><th>State</th><th>Market / Mandi</th><th>Min Price (₹/q)</th><th>Max Price (₹/q)</th><th>Modal Price (₹/q)</th><th>Status</th></tr></thead>
+          <tbody id="district-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:0.5rem">Nature<span>Basket</span></div>
+  <p>Powered by open data from <span>data.gov.in AGMARKNET</span> • Built for the farmers of AP & Telangana</p>
+  <p style="margin-top:0.5rem;font-size:0.78rem">Data is indicative. Always verify at your local APMC mandi before selling.</p>
+</footer>
+
+<button class="chat-fab" onclick="openChat()" title="Open AI Agent">
+  <i class="fas fa-robot"></i>
+  <span class="chat-badge">AI</span>
+</button>
+
+<div class="chatbot" id="chatbot">
+  <div class="chat-head">
+    <div class="chat-avatar">🌾</div>
+    <div class="chat-head-info">
+      <h4>NatureBasket AI Agent</h4>
+      <p>Crop prices • Market advice • Ask anything</p>
+    </div>
+    <button class="chat-close" onclick="closeChat()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">Namaskaram! 🙏 I'm your NatureBasket AI agent. I can help you with:<br><br>• Current crop prices in AP & Telangana<br>• Best district to sell your produce<br>• Market trends and predictions<br>• Farming advice & schemes<br><br>What crop are you looking for today?</div>
+  </div>
+  <div class="chat-quick">
+    <button class="chat-quick-btn" onclick="quickChat('Tomato price today')">🍅 Tomato price</button>
+    <button class="chat-quick-btn" onclick="quickChat('Best district to sell cotton')">Cotton market</button>
+    <button class="chat-quick-btn" onclick="quickChat('Rice MSP price 2024')">Rice MSP</button>
+    <button class="chat-quick-btn" onclick="quickChat('PM Kisan scheme details')">PM Kisan</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chat-input" type="text" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script src="/js/chatbot.js"></script>
+<script src="/js/price-check.js"></script>
+</body>
+</html>

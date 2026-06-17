@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works – NatureBasket</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Nature<span>Basket</span></a>
+  <div class="nav-links">
+    <a href="/price-check.html">Price Check</a>
+    <a href="/how-it-works.html" class="active">How It Works</a>
+    <a href="/features.html">Features</a>
+    <a href="/market-data.html">Market Data</a>
+  </div>
+  <button class="nav-btn" onclick="openChat()">Ask AI Agent</button>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-tag">Process</div>
+  <h1>How <span>NatureBasket</span> Works</h1>
+  <p>Connecting farmers directly to buyers with transparent, real-time pricing.</p>
+</div>
+
+<section style="padding:4rem 2rem;max-width:1100px;margin:0 auto">
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">🔍</div>
+      <h4>Search Crop</h4>
+      <p>Enter any crop name. Our system pulls live data from all APMC mandis across AP & Telangana instantly.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">📊</div>
+      <h4>Compare Prices</h4>
+      <p>View max, min, and modal prices across every district. AI highlights where to sell for best returns.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">📈</div>
+      <h4>Analyse Trends</h4>
+      <p>Historical charts reveal seasonal patterns and price movements to plan your harvest timing.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">🤝</div>
+      <h4>Sell Directly</h4>
+      <p>Connect directly with buyers at the right market yard — no middlemen, full profit for you.</p>
+    </div>
+  </div>
+</section>
+
+<section style="padding:3rem 2rem;max-width:900px;margin:0 auto;text-align:center">
+  <div class="section-title" style="margin-bottom:2rem">The Problem We Solve</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;text-align:left">
+    <div class="problem-card problem-bad">
+      <h4><i class="fas fa-times-circle"></i> Without NatureBasket</h4>
+      <ul>
+        <li>Depend on middlemen for price info</li>
+        <li>Sell at whatever rate agent offers</li>
+        <li>No visibility into other mandi prices</li>
+        <li>Lose 15-30% margins to intermediaries</li>
+      </ul>
+    </div>
+    <div class="problem-card problem-good">
+      <h4><i class="fas fa-check-circle"></i> With NatureBasket</h4>
+      <ul>
+        <li>Real-time prices from 800+ mandis</li>
+        <li>AI recommends best district to sell</li>
+        <li>Historical data to time your harvest</li>
+        <li>Direct buyer connection, full profit</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section style="padding:3rem 2rem;max-width:900px;margin:0 auto;text-align:center">
+  <div class="section-title" style="margin-bottom:1rem">Ready to Get Started?</div>
+  <p style="color:var(--text-mid);margin-bottom:2rem">Search your crop price now and discover the best mandi for your produce.</p>
+  <a href="/price-check.html" class="btn-primary" style="display:inline-flex;text-decoration:none"><i class="fas fa-search" style="margin-right:8px"></i>Check Crop Price</a>
+</section>
+
+<footer>
+  <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:0.5rem">Nature<span>Basket</span></div>
+  <p>Powered by open data from <span>data.gov.in AGMARKNET</span> • Built for the farmers of AP & Telangana</p>
+  <p style="margin-top:0.5rem;font-size:0.78rem">Data is indicative. Always verify at your local APMC mandi before selling.</p>
+</footer>
+
+<button class="chat-fab" onclick="openChat()" title="Open AI Agent">
+  <i class="fas fa-robot"></i>
+  <span class="chat-badge">AI</span>
+</button>
+
+<div class="chatbot" id="chatbot">
+  <div class="chat-head">
+    <div class="chat-avatar">🌾</div>
+    <div class="chat-head-info">
+      <h4>NatureBasket AI Agent</h4>
+      <p>Crop prices • Market advice • Ask anything</p>
+    </div>
+    <button class="chat-close" onclick="closeChat()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot">Namaskaram! 🙏 I'm your NatureBasket AI agent. How can I help you today?</div>
+  </div>
+  <div class="chat-quick">
+    <button class="chat-quick-btn" onclick="quickChat('Tomato price today')">🍅 Tomato price</button>
+    <button class="chat-quick-btn" onclick="quickChat('Best district to sell cotton')">Cotton market</button>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chat-input" type="text" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendChat()">
+    <button class="chat-send" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<script src="/js/chatbot.js"></script>
+</body>
+</html>
