@@ -133,13 +133,74 @@ function switchChart(name, btn) {
   });
 }
 
-function exportData() {
+function exportData() { downloadCSV(); }
+
+function downloadCSV() {
   if (!currentCrop) { alert('Search for a crop first'); return; }
-  var csv = 'District,State,Mandi,Min Price,Max Price,Modal Price\n';
-  currentCrop.districts.forEach(function(d) { csv += d.name + ',' + d.state + ',' + d.mandi + ',' + d.min + ',' + d.max + ',' + d.modal + '\n'; });
+  var csv = 'District,State,Market/Mandi,Min Price (INR/q),Max Price (INR/q),Modal Price (INR/q),Status\n';
+  currentCrop.districts.forEach(function(d) {
+    var status = d.status === 'high' ? 'High Rate' : d.status === 'low' ? 'Best Buy' : 'Average';
+    csv += '"' + d.name + '","' + d.state + '","' + d.mandi + '",' + d.min + ',' + d.max + ',' + d.modal + ',"' + status + '"\n';
+  });
+  var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'naturebasket_prices.csv'; a.click();
+  a.href = url;
+  a.download = 'NatureBasket_' + (currentCrop.key || 'crop') + '_prices_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadExcel() {
+  if (!currentCrop) { alert('Search for a crop first'); return; }
+  var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">';
+  html += '<head><meta charset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Prices</x:Name></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head>';
+  html += '<body>';
+  html += '<h2>NatureBasket - ' + (currentCrop.key || 'Crop').toUpperCase() + ' Prices</h2>';
+  html += '<p>Source: ' + (currentCrop.source || 'AGMARKNET') + ' | Date: ' + (currentCrop.dataDate || new Date().toLocaleDateString('en-IN')) + '</p>';
+  html += '<table border="1">';
+  html += '<tr style="background:#1a4a2e;color:#fff;font-weight:bold"><th>District</th><th>State</th><th>Market / Mandi</th><th>Min Price (\u20B9/q)</th><th>Max Price (\u20B9/q)</th><th>Modal Price (\u20B9/q)</th><th>Status</th></tr>';
+  currentCrop.districts.forEach(function(d) {
+    var status = d.status === 'high' ? 'High Rate' : d.status === 'low' ? 'Best Buy' : 'Average';
+    var bg = d.status === 'high' ? '#dcfce7' : d.status === 'low' ? '#fee2e2' : '#fef9c3';
+    html += '<tr style="background:' + bg + '"><td><b>' + d.name + '</b></td><td>' + d.state + '</td><td>' + d.mandi + '</td><td>\u20B9' + d.min.toLocaleString() + '</td><td>\u20B9' + d.max.toLocaleString() + '</td><td>\u20B9' + d.modal.toLocaleString() + '</td><td>' + status + '</td></tr>';
+  });
+  html += '</table>';
+  if (currentCrop.msp && currentCrop.msp.kharif) {
+    html += '<p style="margin-top:10px"><b>Government MSP:</b> \u20B9' + currentCrop.msp.kharif.toLocaleString() + '/q (' + currentCrop.msp.unit + ')</p>';
+  }
+  html += '</body></html>';
+  var blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'NatureBasket_' + (currentCrop.key || 'crop') + '_prices_' + new Date().toISOString().slice(0,10) + '.xls';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function printTable() {
+  if (!currentCrop) { alert('Search for a crop first'); return; }
+  var w = window.open('', '_blank');
+  var html = '<!DOCTYPE html><html><head><title>NatureBasket - ' + currentCrop.key + ' Prices</title>';
+  html += '<style>body{font-family:Arial,sans-serif;padding:20px}h1{color:#1a4a2e}table{width:100%;border-collapse:collapse;margin:20px 0}th{background:#1a4a2e;color:#fff;padding:10px;text-align:left}td{padding:8px 10px;border-bottom:1px solid #e0ece5}.high{background:#dcfce7}.low{background:#fee2e2}.mid{background:#fef9c3}@media print{button{display:none}}</style>';
+  html += '</head><body>';
+  html += '<h1>NatureBasket - ' + (currentCrop.key || 'Crop').charAt(0).toUpperCase() + (currentCrop.key || '').slice(1) + ' Prices</h1>';
+  html += '<p><b>Source:</b> ' + (currentCrop.source || 'AGMARKNET') + ' | <b>Date:</b> ' + (currentCrop.dataDate || new Date().toLocaleDateString('en-IN')) + '</p>';
+  if (currentCrop.msp && currentCrop.msp.kharif) {
+    html += '<p><b>Government MSP:</b> \u20B9' + currentCrop.msp.kharif.toLocaleString() + '/q (' + currentCrop.msp.unit + ')</p>';
+  }
+  html += '<table><tr><th>District</th><th>State</th><th>Market / Mandi</th><th>Min (\u20B9/q)</th><th>Max (\u20B9/q)</th><th>Modal (\u20B9/q)</th><th>Status</th></tr>';
+  currentCrop.districts.forEach(function(d) {
+    var status = d.status === 'high' ? 'High Rate' : d.status === 'low' ? 'Best Buy' : 'Average';
+    html += '<tr class="' + d.status + '"><td><b>' + d.name + '</b></td><td>' + d.state + '</td><td>' + d.mandi + '</td><td>\u20B9' + d.min.toLocaleString() + '</td><td>\u20B9' + d.max.toLocaleString() + '</td><td>\u20B9' + d.modal.toLocaleString() + '</td><td>' + status + '</td></tr>';
+  });
+  html += '</table>';
+  html += '<p style="color:#888;font-size:12px;margin-top:20px">Generated by NatureBasket | data.gov.in AGMARKNET</p>';
+  html += '<div style="text-align:center;margin:20px 0"><button onclick="window.print()" style="padding:10px 24px;background:#1a4a2e;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px">Print Now</button></div>';
+  html += '</body></html>';
+  w.document.write(html);
+  w.document.close();
 }
 
 window.addEventListener('DOMContentLoaded', function() {

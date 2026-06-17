@@ -127,7 +127,14 @@
     </div>
 
     <div style="margin-bottom:2rem">
-      <div class="section-title" style="font-size:1.3rem;margin-bottom:1rem">District-wise Price Breakdown</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:1rem">
+        <div class="section-title" style="font-size:1.3rem">District-wise Price Breakdown</div>
+        <div style="display:flex;gap:8px">
+          <button onclick="downloadCSV()" style="background:var(--green-pale);border:1px solid #c5e3d0;color:var(--green-mid);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-size:0.82rem;font-weight:500;display:flex;align-items:center;gap:6px"><i class="fas fa-file-csv"></i> Download CSV</button>
+          <button onclick="downloadExcel()" style="background:#e8f0fe;border:1px solid #bfdbfe;color:var(--blue);padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-size:0.82rem;font-weight:500;display:flex;align-items:center;gap:6px"><i class="fas fa-file-excel"></i> Download Excel</button>
+          <button onclick="printTable()" style="background:#fef9c3;border:1px solid #fde68a;color:#854d0e;padding:0.5rem 1rem;border-radius:8px;cursor:pointer;font-size:0.82rem;font-weight:500;display:flex;align-items:center;gap:6px"><i class="fas fa-print"></i> Print</button>
+        </div>
+      </div>
       <div style="overflow-x:auto">
         <table class="district-table" id="district-table">
           <thead><tr><th>District</th><th>State</th><th>Market / Mandi</th><th>Min Price (₹/q)</th><th>Max Price (₹/q)</th><th>Modal Price (₹/q)</th><th>Status</th></tr></thead>
@@ -177,3 +184,4 @@
 <script src="/js/price-check.js"></script>
 </body>
 </html>
+
