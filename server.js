@@ -300,7 +300,6 @@ app.get('/api/crops', (req, res) => {
     res.json({ crops: dynamicCrops });
 
   } catch (error) {
-    console.error("Failed to compile crops dynamically:", error);
     res.status(500).json({ error: "Internal server error assembling dynamic directory." });
   }
 });
@@ -339,8 +338,7 @@ app.get('/api/search', async (req, res) => {
   try {
     const dynamicData = generateDynamicFallback(cropName, state);
     return res.json(dynamicData);
-  } catch (fallbackError) {
-    console.error("Fallback generator error:", fallbackError);
+  } catch (err) {
     return res.status(500).json({ error: "Failed to generate dynamic market projection." });
   }
 });
@@ -350,29 +348,20 @@ app.get('/api/search', async (req, res) => {
 // Get specific crop data
 app.get('/api/crops/:name', async (req, res) => {
   const cleanParam = req.params.name.trim();
-  // Normalize to Title Case (e.g., "onion" -> "Onion")
   const cropNameTitleCase = cleanParam.charAt(0).toUpperCase() + cleanParam.slice(1).toLowerCase();
-  const cropNameLower = cleanParam.toLowerCase();
 
-  // Try live API data first
   let records = await fetchFromMandiAPI(cropNameTitleCase);
-  if (!records || records.length === 0) {
-    records = await fetchFromMandiAPI(cropNameLower);
-  }
-
   if (records && records.length > 0) {
     const transformed = transformData(records, cropNameTitleCase);
     if (transformed) return res.json(transformed);
   }
 
-  // ─── DYNAMIC FALLBACK FOR SPECIFIC CROP ROUTE ───
+  // Use Dynamic Generator
   try {
-    // Pass the state query if it exists, otherwise default to 'AP'
     const stateQuery = req.query.state || 'AP'; 
     const dynamicData = generateDynamicFallback(cropNameTitleCase, stateQuery);
     return res.json(dynamicData);
   } catch (error) {
-    console.error("Error in dynamic crop route fallback:", error);
     res.status(504).json({ error: 'Crop data unavailable' });
   }
 });
@@ -627,14 +616,6 @@ function generateDynamicFallback(cropName, state = 'AP') {
     ]
   };
 }
-
-
-// ─── EXISTING PAGE ROUTES (Leave these as they are) ───
-app.get('/price-check', (req, res) => res.sendFile(path.join(__dirname, 'public', 'price-check.html')));
-app.get('/how-it-works', (req, res) => res.sendFile(path.join(__dirname, 'public', 'how-it-works.html')));
-app.get('/features', (req, res) => res.sendFile(path.join(__dirname, 'public', 'features.html')));
-app.get('/market-data', (req, res) => res.sendFile(path.join(__dirname, 'public', 'market-data.html')));
-
 
 // ─── SERVER START (This must stay at the very absolute bottom) ───
 app.listen(PORT, () => {
