@@ -481,23 +481,31 @@ app.get('/api/search', async (req, res) => {
 // Get specific crop data
 app.get('/api/crops/:name', async (req, res) => {
   const cleanParam = req.params.name.trim();
+  // Normalize to Title Case (e.g., "onion" -> "Onion")
   const cropNameTitleCase = cleanParam.charAt(0).toUpperCase() + cleanParam.slice(1).toLowerCase();
   const cropNameLower = cleanParam.toLowerCase();
+
+  // Try live API data first
   let records = await fetchFromMandiAPI(cropNameTitleCase);
-  if(!records || records.length === 0) {
+  if (!records || records.length === 0) {
     records = await fetchFromMandiAPI(cropNameLower);
   }
+
   if (records && records.length > 0) {
     const transformed = transformData(records, cropNameTitleCase);
     if (transformed) return res.json(transformed);
   }
-  if (CACHED_DATA[cropNameLower]) return res.json(CACHED_DATA[cropNameLower]);
-  res.status(404).json({ error: 'Crop not found' });
-});
 
-// MSP data
-app.get('/api/msp', (req, res) => {
-  res.json({ msp: MSP_DATA, source: 'CACP Recommendations 2024-25 via data.gov.in' });
+  // ─── DYNAMIC FALLBACK FOR SPECIFIC CROP ROUTE ───
+  try {
+    // Pass the state query if it exists, otherwise default to 'AP'
+    const stateQuery = req.query.state || 'AP'; 
+    const dynamicData = generateDynamicFallback(cropNameTitleCase, stateQuery);
+    return res.json(dynamicData);
+  } catch (error) {
+    console.error("Error in dynamic crop route fallback:", error);
+    res.status(504).json({ error: 'Crop data unavailable' });
+  }
 });
 
 // Government schemes
