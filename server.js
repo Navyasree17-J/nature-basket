@@ -323,6 +323,81 @@ const CACHED_DATA = {
       { name: 'Adilabad', state: 'TG', mandi: 'Adilabad APMC', min: 6200, max: 6800, modal: 6500, status: 'low' }
     ],
     insights: ['Using cached data. API temporarily unavailable.', 'Source: data.gov.in AGMARKNET — Government of India.']
+  },
+  onion: {
+    emoji: '\u{1F405}', unit: 'quintal', source: 'Cached AGMARKNET data',
+    max: 2500, maxDistrict: 'Kurnool, AP', min: 900, minDistrict: 'Mahbubnagar, TG', avg: 1700,
+    msp: MSP_DATA.onion,
+    districts: [
+      { name: 'Kurnool', state: 'AP', mandi: 'Kurnool APMC', min: 1800, max: 2500, modal: 2100, status: 'high' },
+      { name: 'Mahbubnagar', state: 'TG', mandi: 'Badepally', min: 900, max: 1600, modal: 1250, status: 'low' }
+    ],
+    insights: ['Using cached data. API temporarily unavailable.', 'Market trends for Onion are highly volatile. Check local APMC before selling.']
+  },
+  maize: {
+    emoji: '\u{1F33D}', unit: 'quintal', source: 'Cached AGMARKNET data',
+    max: 2300, maxDistrict: 'Nizamabad, TG', min: 1850, minDistrict: 'Khammam, TG', avg: 2050,
+    msp: MSP_DATA.maize,
+    districts: [
+      { name: 'Nizamabad', state: 'TG', mandi: 'Nizamabad Yard', min: 1950, max: 2300, modal: 2150, status: 'high' },
+      { name: 'Khammam', state: 'TG', mandi: 'Khammam APMC', min: 1850, max: 2100, modal: 1950, status: 'low' }
+    ],
+    insights: ['Using cached data. API temporarily unavailable.', 'Maize rates fluctuate slightly below or above current government MSP blocks.']
+  },
+  // 👇 ADDED GROUNDNUT 👇
+  groundnut: {
+    emoji: '\u{1F95C}', unit: 'quintal', source: 'Cached AGMARKNET data',
+    max: 7400, maxDistrict: 'Anantapur, AP', min: 5800, minDistrict: 'Mahbubnagar, TG', avg: 6600,
+    msp: MSP_DATA.groundnut,
+    districts: [
+      { name: 'Anantapur', state: 'AP', mandi: 'Anantapur APMC', min: 6500, max: 7400, modal: 7000, status: 'high' },
+      { name: 'Mahbubnagar', state: 'TG', mandi: 'Badepally', min: 5800, max: 6700, modal: 6300, status: 'low' }
+    ],
+    insights: ['Using cached data.', 'Groundnut prices hold steady near the government specified minimum support levels.']
+  },
+  // 👇 ADDED TURMERIC 👇
+  turmeric: {
+    emoji: '\u{1F330}', unit: 'quintal', source: 'Cached AGMARKNET data',
+    max: 13500, maxDistrict: 'Nizamabad, TG', min: 9000, minDistrict: 'Guntur, AP', avg: 11250,
+    msp: MSP_DATA.turmeric,
+    districts: [
+      { name: 'Nizamabad', state: 'TG', mandi: 'Nizamabad Yard', min: 10500, max: 13500, modal: 12000, status: 'high' },
+      { name: 'Guntur', state: 'AP', mandi: 'Guntur Main Yard', min: 9000, max: 11500, modal: 10200, status: 'low' }
+    ],
+    insights: ['Using cached data.', 'Turmeric commercial markets are experiencing high trading volumes this quarter.']
+  },
+  // 👇 ADDED CHILLI 👇
+  chilli: {
+    emoji: '\u{1F336}', unit: 'quintal', source: 'Cached AGMARKNET data',
+    max: 21000, maxDistrict: 'Guntur, AP', min: 14000, minDistrict: 'Khammam, TG', avg: 17500,
+    msp: MSP_DATA.chilli,
+    districts: [
+      { name: 'Guntur', state: 'AP', mandi: 'Guntur Red Chilli Market', min: 16000, max: 21000, modal: 18500, status: 'high' },
+      { name: 'Khammam', state: 'TG', mandi: 'Khammam APMC', min: 14000, max: 18500, modal: 16200, status: 'mid' }
+    ],
+    insights: ['Using cached data.', 'Guntur red chilli continues to drive baseline export market index projections.']
+  },
+  // 👇 ADDED WHEAT 👇
+  wheat: {
+    emoji: '\u{1F33E}', unit: 'quintal', source: 'Cached AGMARKNET data',
+    max: 2600, maxDistrict: 'Kurnool, AP', min: 2150, minDistrict: 'Adilabad, TG', avg: 2375,
+    msp: MSP_DATA.wheat,
+    districts: [
+      { name: 'Kurnool', state: 'AP', mandi: 'Kurnool APMC', min: 2300, max: 2600, modal: 2450, status: 'high' },
+      { name: 'Adilabad', state: 'TG', mandi: 'Adilabad Market', min: 2150, max: 2400, modal: 2275, status: 'low' }
+    ],
+    insights: ['Using cached data.', 'Wheat updates show highly defensive tracking parallel to direct procurement channels.']
+  },
+  // 👇 ADDED BRINJALS (EGGPLANT) 👇
+  brinjal: {
+    emoji: '\u{1F346}', unit: 'quintal', source: 'Cached AGMARKNET data',
+    max: 2000, maxDistrict: 'Rangareddy, TG', min: 800, minDistrict: 'Chittoor, AP', avg: 1400,
+    msp: null, // Brinjal doesn't have a Union MSP index
+    districts: [
+      { name: 'Rangareddy', state: 'TG', mandi: 'Bowenpally Mkt', min: 1400, max: 2000, modal: 1700, status: 'high' },
+      { name: 'Chittoor', state: 'AP', mandi: 'Madanapalle Yard', min: 800, max: 1300, modal: 1050, status: 'low' }
+    ],
+    insights: ['Using cached data.', 'Vegetable trends subject to quick regional morning logistics updates.']
   }
 };
 
