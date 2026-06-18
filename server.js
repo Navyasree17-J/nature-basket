@@ -618,6 +618,16 @@ function generateDynamicFallback(cropName, state = 'AP') {
 }
 
 // ─── SERVER START (This must stay at the very absolute bottom) ───
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Dynamic Server successfully running on port ${PORT}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`[PORT CONFLICT] Port ${PORT} is busy. Retrying connection...`);
+    setTimeout(() => {
+      server.close();
+      app.listen(PORT);
+    }, 1000);
+  } else {
+    console.error('Server error:', err);
+  }
 });
