@@ -426,25 +426,24 @@ app.get('/api/search', async (req, res) => {
   const { crop, state, period } = req.query;
   if (!crop) return res.status(400).json({ error: 'crop parameter is required' });
 
+  // Case normalization
   const cleanInput = crop.trim();
   const cropName = cleanInput.charAt(0).toUpperCase() + cleanInput.slice(1).toLowerCase();
-  const cacheKey = cropName.toLowerCase();
 
   console.log(`[SEARCH] ${cropName} | state=${state} | period=${period}`);
 
-  // Try 1: Community Mandi API (free, real data.gov.in data)
+  // Try 1: Community Mandi API
   let records = await fetchFromMandiAPI(cropName);
 
-  // Try 2: data.gov.in direct API (if user has API key)
+  // Try 2: data.gov.in direct API 
   if (!records) {
     records = await fetchDataGovIn(cropName, state);
   }
 
-  // Try 3: Cached fallback
+  // Try 3: Process live records if found
   if (records && records.length > 0) {
     const transformed = transformData(records, cropName);
     if (transformed) {
-      // Apply state filter
       if (state && state !== 'both') {
         transformed.districts = transformed.districts.filter(d => d.state === state);
       }
@@ -452,10 +451,12 @@ app.get('/api/search', async (req, res) => {
     }
   }
 
+  // ─── DYNAMIC FALLBACK SYSTEM (Corrected & Self-Contained) ───
   try {
     const dynamicData = generateDynamicFallback(cropName, state);
     return res.json(dynamicData);
   } catch (fallbackError) {
+    console.error("Fallback generator error:", fallbackError);
     return res.status(500).json({ error: "Failed to generate dynamic market projection." });
   }
 });
