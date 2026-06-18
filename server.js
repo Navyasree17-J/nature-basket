@@ -348,7 +348,13 @@ app.get('/api/search', async (req, res) => {
   const { crop, state, period } = req.query;
   if (!crop) return res.status(400).json({ error: 'crop parameter is required' });
 
-  const cleanInput = crop.trim();
+  const cleanInput = crop.trim().toLowerCase();
+  const validCrops = Object.keys(MSP_DATA); // ['rice', 'wheat', 'maize', 'tomato', etc.]
+  if (!validCrops.includes(cleanInput)) {
+    return res.status(400).json({ 
+      error: `"${crop}" is not recognized as a valid farming commodity. Please search for agricultural items (e.g., Rice, Wheat, Tomato, Groundnut).` 
+    });
+  }
   const cropName = cleanInput.charAt(0).toUpperCase() + cleanInput.slice(1).toLowerCase();
 
   console.log(`[SEARCH] ${cropName} | state=${state} | period=${period}`);
@@ -378,7 +384,11 @@ app.get('/api/search', async (req, res) => {
 
 // Get specific crop data Route
 app.get('/api/crops/:name', async (req, res) => {
-  const cleanParam = req.params.name.trim();
+  const cleanParam = req.params.name.trim().toLowerCase();
+  const validCrops = Object.keys(MSP_DATA);
+  if (!validCrops.includes(cleanParam)) {
+    return res.status(400).json({ error: 'Requested item is not a valid agricultural commodity.' });
+  }
   const cropNameTitleCase = cleanParam.charAt(0).toUpperCase() + cleanParam.slice(1).toLowerCase();
 
   let records = await fetchFromMandiAPI(cropNameTitleCase);
