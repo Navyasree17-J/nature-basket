@@ -16,18 +16,18 @@ const DATAGOV_RESOURCE = '9ef84268-d588-465a-a308-a864a43d0070';
 
 // ─── MSP DATA (Source: data.gov.in / CACP recommendations 2024-25) ───
 const MSP_DATA = {
-  'Rice': { kharif: 2300, rabi: 2300, unit: '₹/quintal' },
-  'Wheat': { kharif: 2275, rabi: 2275, unit: '₹/quintal' },
-  'Maize': { kharif: 2225, rabi: 2225, unit: '₹/quintal' },
-  'Cotton': { kharif: 7020, rabi: 7020, unit: '₹/quintal (long staple)' },
-  'Groundnut': { kharif: 6783, rabi: 6783, unit: '₹/quintal' },
-  'Soybean': { kharif: 4892, rabi: 4892, unit: '₹/quintal' },
-  'Turmeric': { kharif: 7000, rabi: 7000, unit: '₹/quintal (indicative)' },
-  'Onion': { kharif: null, rabi: null, unit: 'No MSP (market determined)' },
-  'Tomato': { kharif: null, rabi: null, unit: 'No MSP (market determined)' },
-  'Chilli': { kharif: null, rabi: null, unit: 'No MSP (market determined)' },
-  'Potato': { kharif: null, rabi: null, unit: 'No MSP (market determined)' },
-  'Paddy': { kharif: 2300, rabi: 2300, unit: '₹/quintal' },
+  'rice': { kharif: 2300, rabi: 2300, unit: '₹/quintal' },
+  'wheat': { kharif: 2275, rabi: 2275, unit: '₹/quintal' },
+  'maize': { kharif: 2225, rabi: 2225, unit: '₹/quintal' },
+  'cotton': { kharif: 7020, rabi: 7020, unit: '₹/quintal (long staple)' },
+  'groundnut': { kharif: 6783, rabi: 6783, unit: '₹/quintal' },
+  'soybean': { kharif: 4892, rabi: 4892, unit: '₹/quintal' },
+  'turmeric': { kharif: 7000, rabi: 7000, unit: '₹/quintal (indicative)' },
+  'onion': { kharif: null, rabi: null, unit: 'No MSP (market determined)' },
+  'tomato': { kharif: null, rabi: null, unit: 'No MSP (market determined)' },
+  'chilli': { kharif: null, rabi: null, unit: 'No MSP (market determined)' },
+  'potato': { kharif: null, rabi: null, unit: 'No MSP (market determined)' },
+  'paddy': { kharif: 2300, rabi: 2300, unit: '₹/quintal' },
 };
 
 // ─── GOVERNMENT SCHEMES DATA (Source: pmkisan.gov.in, data.gov.in) ───
@@ -351,7 +351,8 @@ app.get('/api/search', async (req, res) => {
   const { crop, state, period } = req.query;
   if (!crop) return res.status(400).json({ error: 'crop parameter is required' });
 
-  const cropName = crop.trim();
+  const cleanInput = crop.trim();
+  const cropName = cleanInput.charAt(0).toUpperCase() + cleanInput.slice(1).toLowerCase();
   const cacheKey = cropName.toLowerCase();
 
   console.log(`[SEARCH] ${cropName} | state=${state} | period=${period}`);
@@ -396,13 +397,18 @@ app.get('/api/search', async (req, res) => {
 
 // Get specific crop data
 app.get('/api/crops/:name', async (req, res) => {
-  const cropName = req.params.name.toLowerCase().trim();
-  const records = await fetchFromMandiAPI(cropName);
+  const cleanParam = req.params.name.trim();
+  const cropNameTitleCase = cleanParam.charAt(0).toUpperCase() + cleanParam.slice(1).toLowerCase();
+  const cropNameLower = cleanParam.toLowerCase();
+  let records = await fetchFromMandiAPI(cropNameTitleCase);
+  if(!records || records.length === 0) {
+    records = await fetchFromMandiAPI(cropNameLower);
+  }
   if (records && records.length > 0) {
-    const transformed = transformData(records, cropName);
+    const transformed = transformData(records, cropNameTitleCase);
     if (transformed) return res.json(transformed);
   }
-  if (CACHED_DATA[cropName]) return res.json(CACHED_DATA[cropName]);
+  if (CACHED_DATA[cropNameLower]) return res.json(CACHED_DATA[cropNameLower]);
   res.status(404).json({ error: 'Crop not found' });
 });
 
