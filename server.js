@@ -276,149 +276,33 @@ function getCropEmoji(name) {
   return map[name.toLowerCase()] || '\u{1F331}';
 }
 
-// ─── CACHED FALLBACK DATA ───
-const CACHED_DATA = {
-  tomato: {
-    emoji: '\u{1F345}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 3200, maxDistrict: 'Kurnool, AP', min: 820, minDistrict: 'Karimnagar, TG', avg: 1850,
-    msp: MSP_DATA.Tomato,
-    districts: [
-      { name: 'Kurnool', state: 'AP', mandi: 'Kurnool APMC', min: 2800, max: 3200, modal: 3050, status: 'high' },
-      { name: 'Guntur', state: 'AP', mandi: 'Guntur Main Yard', min: 2200, max: 2800, modal: 2500, status: 'high' },
-      { name: 'Krishna', state: 'AP', mandi: 'Vijayawada Market', min: 1800, max: 2400, modal: 2100, status: 'mid' },
-      { name: 'East Godavari', state: 'AP', mandi: 'Rajamahendravaram', min: 1600, max: 2200, modal: 1900, status: 'mid' },
-      { name: 'West Godavari', state: 'AP', mandi: 'Bhimavaram', min: 1500, max: 2000, modal: 1750, status: 'mid' },
-      { name: 'Rangareddy', state: 'TG', mandi: 'Bowenpally Mkt', min: 1200, max: 1800, modal: 1500, status: 'mid' },
-      { name: 'Karimnagar', state: 'TG', mandi: 'Karimnagar Yard', min: 820, max: 1400, modal: 1100, status: 'low' },
-      { name: 'Warangal', state: 'TG', mandi: 'Hanamkonda Market', min: 900, max: 1500, modal: 1200, status: 'low' }
-    ],
-    insights: ['Using cached data. API temporarily unavailable.', 'Source: data.gov.in AGMARKNET — Government of India.']
-  },
-  rice: {
-    emoji: '\u{1F33E}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 2400, maxDistrict: 'East Godavari, AP', min: 1800, minDistrict: 'Medak, TG', avg: 2100,
-    msp: MSP_DATA.Rice,
-    districts: [
-      { name: 'East Godavari', state: 'AP', mandi: 'Rajamahendravaram', min: 2100, max: 2400, modal: 2250, status: 'high' },
-      { name: 'West Godavari', state: 'AP', mandi: 'Bhimavaram Yard', min: 2050, max: 2350, modal: 2200, status: 'high' },
-      { name: 'Krishna', state: 'AP', mandi: 'Vijayawada Market', min: 1950, max: 2300, modal: 2100, status: 'high' },
-      { name: 'Warangal', state: 'TG', mandi: 'Hanamkonda', min: 2000, max: 2300, modal: 2150, status: 'high' },
-      { name: 'Karimnagar', state: 'TG', mandi: 'Karimnagar', min: 1950, max: 2250, modal: 2100, status: 'high' },
-      { name: 'Guntur', state: 'AP', mandi: 'Guntur APMC', min: 1900, max: 2250, modal: 2050, status: 'mid' },
-      { name: 'Medak', state: 'TG', mandi: 'Medak APMC', min: 1800, max: 2100, modal: 1900, status: 'low' }
-    ],
-    insights: ['Using cached data. API temporarily unavailable.', 'Source: data.gov.in AGMARKNET — Government of India.']
-  },
-  cotton: {
-    emoji: '\u{1F33F}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 7800, maxDistrict: 'Guntur, AP', min: 6200, minDistrict: 'Adilabad, TG', avg: 7100,
-    msp: MSP_DATA.Cotton,
-    districts: [
-      { name: 'Guntur', state: 'AP', mandi: 'Guntur Cotton Yard', min: 7400, max: 7800, modal: 7600, status: 'high' },
-      { name: 'Krishna', state: 'AP', mandi: 'Machilipatnam', min: 7200, max: 7700, modal: 7450, status: 'high' },
-      { name: 'Warangal', state: 'TG', mandi: 'Hanamkonda', min: 7000, max: 7500, modal: 7200, status: 'high' },
-      { name: 'Kurnool', state: 'AP', mandi: 'Kurnool APMC', min: 7000, max: 7500, modal: 7250, status: 'high' },
-      { name: 'Karimnagar', state: 'TG', mandi: 'Karimnagar', min: 6800, max: 7300, modal: 7050, status: 'mid' },
-      { name: 'Nalgonda', state: 'TG', mandi: 'Suryapet', min: 6500, max: 7000, modal: 6750, status: 'mid' },
-      { name: 'Adilabad', state: 'TG', mandi: 'Adilabad APMC', min: 6200, max: 6800, modal: 6500, status: 'low' }
-    ],
-    insights: ['Using cached data. API temporarily unavailable.', 'Source: data.gov.in AGMARKNET — Government of India.']
-  },
-  onion: {
-    emoji: '\u{1F405}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 2500, maxDistrict: 'Kurnool, AP', min: 900, minDistrict: 'Mahbubnagar, TG', avg: 1700,
-    msp: MSP_DATA.onion,
-    districts: [
-      { name: 'Kurnool', state: 'AP', mandi: 'Kurnool APMC', min: 1800, max: 2500, modal: 2100, status: 'high' },
-      { name: 'Mahbubnagar', state: 'TG', mandi: 'Badepally', min: 900, max: 1600, modal: 1250, status: 'low' }
-    ],
-    insights: ['Using cached data. API temporarily unavailable.', 'Market trends for Onion are highly volatile. Check local APMC before selling.']
-  },
-  maize: {
-    emoji: '\u{1F33D}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 2300, maxDistrict: 'Nizamabad, TG', min: 1850, minDistrict: 'Khammam, TG', avg: 2050,
-    msp: MSP_DATA.maize,
-    districts: [
-      { name: 'Nizamabad', state: 'TG', mandi: 'Nizamabad Yard', min: 1950, max: 2300, modal: 2150, status: 'high' },
-      { name: 'Khammam', state: 'TG', mandi: 'Khammam APMC', min: 1850, max: 2100, modal: 1950, status: 'low' }
-    ],
-    insights: ['Using cached data. API temporarily unavailable.', 'Maize rates fluctuate slightly below or above current government MSP blocks.']
-  },
-  // 👇 ADDED GROUNDNUT 👇
-  groundnut: {
-    emoji: '\u{1F95C}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 7400, maxDistrict: 'Anantapur, AP', min: 5800, minDistrict: 'Mahbubnagar, TG', avg: 6600,
-    msp: MSP_DATA.groundnut,
-    districts: [
-      { name: 'Anantapur', state: 'AP', mandi: 'Anantapur APMC', min: 6500, max: 7400, modal: 7000, status: 'high' },
-      { name: 'Mahbubnagar', state: 'TG', mandi: 'Badepally', min: 5800, max: 6700, modal: 6300, status: 'low' }
-    ],
-    insights: ['Using cached data.', 'Groundnut prices hold steady near the government specified minimum support levels.']
-  },
-  // 👇 ADDED TURMERIC 👇
-  turmeric: {
-    emoji: '\u{1F330}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 13500, maxDistrict: 'Nizamabad, TG', min: 9000, minDistrict: 'Guntur, AP', avg: 11250,
-    msp: MSP_DATA.turmeric,
-    districts: [
-      { name: 'Nizamabad', state: 'TG', mandi: 'Nizamabad Yard', min: 10500, max: 13500, modal: 12000, status: 'high' },
-      { name: 'Guntur', state: 'AP', mandi: 'Guntur Main Yard', min: 9000, max: 11500, modal: 10200, status: 'low' }
-    ],
-    insights: ['Using cached data.', 'Turmeric commercial markets are experiencing high trading volumes this quarter.']
-  },
-  // 👇 ADDED CHILLI 👇
-  chilli: {
-    emoji: '\u{1F336}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 21000, maxDistrict: 'Guntur, AP', min: 14000, minDistrict: 'Khammam, TG', avg: 17500,
-    msp: MSP_DATA.chilli,
-    districts: [
-      { name: 'Guntur', state: 'AP', mandi: 'Guntur Red Chilli Market', min: 16000, max: 21000, modal: 18500, status: 'high' },
-      { name: 'Khammam', state: 'TG', mandi: 'Khammam APMC', min: 14000, max: 18500, modal: 16200, status: 'mid' }
-    ],
-    insights: ['Using cached data.', 'Guntur red chilli continues to drive baseline export market index projections.']
-  },
-  // 👇 ADDED WHEAT 👇
-  wheat: {
-    emoji: '\u{1F33E}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 2600, maxDistrict: 'Kurnool, AP', min: 2150, minDistrict: 'Adilabad, TG', avg: 2375,
-    msp: MSP_DATA.wheat,
-    districts: [
-      { name: 'Kurnool', state: 'AP', mandi: 'Kurnool APMC', min: 2300, max: 2600, modal: 2450, status: 'high' },
-      { name: 'Adilabad', state: 'TG', mandi: 'Adilabad Market', min: 2150, max: 2400, modal: 2275, status: 'low' }
-    ],
-    insights: ['Using cached data.', 'Wheat updates show highly defensive tracking parallel to direct procurement channels.']
-  },
-  // 👇 ADDED BRINJALS (EGGPLANT) 👇
-  brinjal: {
-    emoji: '\u{1F346}', unit: 'quintal', source: 'Cached AGMARKNET data',
-    max: 2000, maxDistrict: 'Rangareddy, TG', min: 800, minDistrict: 'Chittoor, AP', avg: 1400,
-    msp: null, // Brinjal doesn't have a Union MSP index
-    districts: [
-      { name: 'Rangareddy', state: 'TG', mandi: 'Bowenpally Mkt', min: 1400, max: 2000, modal: 1700, status: 'high' },
-      { name: 'Chittoor', state: 'AP', mandi: 'Madanapalle Yard', min: 800, max: 1300, modal: 1050, status: 'low' }
-    ],
-    insights: ['Using cached data.', 'Vegetable trends subject to quick regional morning logistics updates.']
-  }
-};
-
 // ─── API ROUTES ───
 
 // Get available crops list
 app.get('/api/crops', (req, res) => {
-  res.json({
-    crops: [
-      { key: 'tomato', emoji: '\u{1F345}', name: 'Tomato' },
-      { key: 'rice', emoji: '\u{1F33E}', name: 'Rice' },
-      { key: 'cotton', emoji: '\u{1F33F}', name: 'Cotton' },
-      { key: 'onion', emoji: '\u{1F9C5}', name: 'Onion' },
-      { key: 'maize', emoji: '\u{1F33D}', name: 'Maize' },
-      { key: 'groundnut', emoji: '\u{1F95C}', name: 'Groundnut' },
-      { key: 'wheat', emoji: '\u{1F33E}', name: 'Wheat' },
-      { key: 'potato', emoji: '\u{1F954}', name: 'Potato' },
-      { key: 'chilli', emoji: '\u{1F336}\uFE0F', name: 'Chilli' },
-      { key: 'soybean', emoji: '\u{1FAD8}', name: 'Soybean' }
-    ]
-  });
+  try {
+    // 1. Extract all crop identifiers present in your Minimum Support Price list
+    const cropKeys = Object.keys(MSP_DATA); // ['tomato', 'rice', 'cotton', 'onion', ...]
+
+    // 2. Map over keys to auto-generate the frontend object structures
+    const dynamicCrops = cropKeys.map(key => {
+      // Capitalize the first letter for UI presentation display ("onion" -> "Onion")
+      const formattedName = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
+      
+      return {
+        key: key,
+        emoji: getCropEmoji(key), // Dynamically assigns the right icon mapping
+        name: formattedName
+      };
+    });
+
+    // 3. Return the dynamically synthesized array back to your client-side page
+    res.json({ crops: dynamicCrops });
+
+  } catch (error) {
+    console.error("Failed to compile crops dynamically:", error);
+    res.status(500).json({ error: "Internal server error assembling dynamic directory." });
+  }
 });
 
 // Search crop — tries real APIs first, falls back to cached data
@@ -461,15 +345,6 @@ app.get('/api/search', async (req, res) => {
   }
 });
 
-  // Fallback to cached data
-  if (CACHED_DATA[cacheKey]) {
-    const cached = { ...CACHED_DATA[cacheKey] };
-    cached.insights = ['Using cached data — live API temporarily unavailable.', ...cached.insights];
-    if (state && state !== 'both') {
-      cached.districts = cached.districts.filter(d => d.state === state);
-    }
-    return res.json(cached);
-  }
 
   // No data at all
   return res.status(404).json({
