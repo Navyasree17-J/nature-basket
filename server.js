@@ -609,13 +609,5 @@ app.get('/features', (req, res) => res.sendFile(path.join(__dirname, 'public', '
 app.get('/market-data', (req, res) => res.sendFile(path.join(__dirname, 'public', 'market-data.html')));
 
 app.listen(PORT, () => {
-  console.log(`\n===================================`);
-  console.log(` NatureBasket Server Running`);
-  console.log(` http://localhost:${PORT}`);
-  console.log(`===================================`);
-  console.log(` Data sources:`);
-  console.log(`  - Mandi API: ${MANDI_API_BASE}`);
-  console.log(`  - data.gov.in: ${DATAGOV_API_KEY ? 'API key configured' : 'No API key (using Mandi API + cache)'}`);
-  console.log(`  - AI Chat: Agriculture Knowledge Base (offline, always available)`);
-  console.log(`===================================\n`);
+  console.log(`Server is running on port ${PORT}`);
 });
