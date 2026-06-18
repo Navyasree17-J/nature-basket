@@ -346,12 +346,6 @@ app.get('/api/search', async (req, res) => {
 });
 
 
-  // No data at all
-  return res.status(404).json({
-    error: 'Crop not found',
-    message: `No data available for "${cropName}". Try: Tomato, Rice, Cotton, Onion, Maize, Groundnut, Wheat, Potato, Chilli, Soybean.`,
-    availableCrops: Object.keys(CACHED_DATA)
-});
 
 // Get specific crop data
 app.get('/api/crops/:name', async (req, res) => {
