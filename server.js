@@ -574,10 +574,6 @@ app.get('/how-it-works', (req, res) => res.sendFile(path.join(__dirname, 'public
 app.get('/features', (req, res) => res.sendFile(path.join(__dirname, 'public', 'features.html')));
 app.get('/market-data', (req, res) => res.sendFile(path.join(__dirname, 'public', 'market-data.html')));
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
 // ... [Your existing routes like app.get('/api/search'), etc. are above here] ...
 
 // ─── PASTE THE FUNCTION HERE ───
